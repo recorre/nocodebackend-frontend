@@ -41,8 +41,8 @@ app.add_middleware(
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Mount widget files
-app.mount("/widget", StaticFiles(directory="../widget"), name="widget")
+# Mount widget files - REMOVED: directory ../widget does not exist in Vercel
+# app.mount("/widget", StaticFiles(directory="../widget"), name="widget")
 
 # Templates
 templates = Jinja2Templates(directory="templates")
