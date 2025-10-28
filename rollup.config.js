@@ -3,7 +3,7 @@ import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 
 export default {
-  input: 'src/widget.js',
+  input: 'static/js/widget.js',
   output: [
     {
       file: 'dist/comment-widget.js',

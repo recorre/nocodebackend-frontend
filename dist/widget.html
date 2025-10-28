@@ -1,0 +1,122 @@
+{% set thread_id = thread_id or 'default-thread' %}
+{% set comments = comments or [] %}
+{% set api_url = api_url or 'http://localhost:8000' %}
+
+<section class="indie-comments-widget" id="comments-{{ thread_id }}" role="region" aria-label="Comentários da página">
+  <h2>Comentários{% if comments %} ({{ comments|length }}){% endif %}</h2>
+
+  <!-- ✅ SSR: Funciona SEM JavaScript -->
+  <noscript>
+    <p><strong>JavaScript desabilitado.</strong> Comentários exibidos, mas você não pode interagir.</p>
+  </noscript>
+
+  <!-- Formulário com fallback -->
+  <form
+    action="{{ api_url }}/api/v1/comments/"
+    method="POST"
+    class="ic-form"
+    data-widget-form
+    role="form"
+    aria-label="Formulário de comentário"
+  >
+    <input type="hidden" name="thread_id" value="{{ thread_id }}">
+
+    <div class="form-group">
+      <label for="name-{{ thread_id }}">Nome:</label>
+      <input
+        type="text"
+        id="name-{{ thread_id }}"
+        name="author_name"
+        required
+        autocomplete="name"
+        aria-describedby="name-hint-{{ thread_id }}"
+        aria-required="true"
+      >
+      <span id="name-hint-{{ thread_id }}" class="hint">Será exibido publicamente</span>
+    </div>
+
+    <div class="form-group">
+      <label for="email-{{ thread_id }}">Email:</label>
+      <input
+        type="email"
+        id="email-{{ thread_id }}"
+        name="author_email"
+        required
+        autocomplete="email"
+        aria-describedby="email-hint-{{ thread_id }}"
+        aria-required="true"
+      >
+      <span id="email-hint-{{ thread_id }}" class="hint">Não será publicado</span>
+    </div>
+
+    <div class="form-group">
+      <label for="content-{{ thread_id }}">Comentário:</label>
+      <textarea
+        id="content-{{ thread_id }}"
+        name="content"
+        required
+        rows="3"
+        maxlength="500"
+        aria-describedby="content-hint-{{ thread_id }}"
+        aria-required="true"
+      ></textarea>
+      <span id="content-hint-{{ thread_id }}" class="hint">Máximo 500 caracteres</span>
+    </div>
+
+    <button type="submit" aria-describedby="submit-hint-{{ thread_id }}">Enviar Comentário</button>
+    <span id="submit-hint-{{ thread_id }}" class="sr-only">Comentário será enviado para moderação antes de ser publicado</span>
+  </form>
+
+  <!-- Lista de comentários (SSR) -->
+  <div class="ic-comments-list" role="feed" aria-label="Lista de comentários">
+    {% for comment in comments %}
+    <article
+      class="ic-comment"
+      role="article"
+      aria-posinset="{{ loop.index }}"
+      aria-setsize="{{ comments|length }}"
+      aria-labelledby="comment-author-{{ thread_id }}-{{ loop.index }}"
+    >
+      <header class="ic-comment__header">
+        <strong id="comment-author-{{ thread_id }}-{{ loop.index }}">{{ comment.author_name }}</strong>
+        <time datetime="{{ comment.created_at }}">
+          {{ comment.created_at|strftime('%d/%m/%Y %H:%M') }}
+        </time>
+      </header>
+      <div class="ic-comment__body">
+        {{ comment.content|safe }}
+      </div>
+    </article>
+    {% else %}
+    <div class="ic-empty-state" role="status" aria-live="polite">
+      Nenhum comentário ainda. Seja o primeiro a comentar!
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ✅ Live region para anúncios dinâmicos -->
+  <div
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+    class="sr-only"
+    id="ic-announcer-{{ thread_id }}"
+  ></div>
+
+  <!-- Payload JSON para hidratação -->
+  <script type="application/json" id="ic-data-{{ thread_id }}">
+    {
+      "thread_id": "{{ thread_id }}",
+      "comments": {{ comments|tojson }},
+      "api_url": "{{ api_url }}"
+    }
+  </script>
+</section>
+
+<!-- Widget CSS (inline para isolamento) -->
+<style>
+{% include 'widget_inline.css' %}
+</style>
+
+<!-- Widget JS (opcional, melhora UX) -->
+<script src="{{ url_for('static', filename='js/widget.js') }}" defer></script>

@@ -7,7 +7,7 @@ class IndieCommentsWidget extends HTMLElement {
         console.log('IndieCommentsWidget constructor called');
         this.threadId = this.getAttribute('thread-id') || window.location.pathname;
         this.apiBaseUrl = this.getAttribute('api-base-url') || 'http://localhost:8000';
-        this.containerId = 'indie-comments-container'; // Fixed ID for shadow DOM
+        this.containerId = 'indie-comments-container'; // Fixed ID for container
         this.moderationEnabled = false;
         this.comments = [];
 
@@ -211,10 +211,11 @@ class IndieCommentsWidget extends HTMLElement {
         };
 
         this.currentTheme = 'default'; // Default theme
-        this.shadow = this.attachShadow({ mode: 'open' });
+        // this.shadow = this.attachShadow({ mode: 'open' }); // Disabled for testing
         // Initialize synchronously first, then async
         this.render();
-        this.init();
+        // Delay async init to ensure DOM is ready
+        setTimeout(() => this.init(), 100);
     }
 
     async init() {
@@ -289,32 +290,36 @@ class IndieCommentsWidget extends HTMLElement {
     }
 
     clearForm() {
-        const form = this.shadow.querySelector('#indie-comments-form');
+        const form = this.querySelector('#indie-comments-form');
         if (form) {
             form.reset();
         }
     }
 
     showMessage(message) {
-        const messageEl = this.shadow.querySelector('#indie-comments-message');
+        const messageEl = this.querySelector('#indie-comments-message');
         if (messageEl) {
             messageEl.textContent = message;
             messageEl.className = 'indie-comments-message success';
+            messageEl.setAttribute('aria-live', 'polite');
             setTimeout(() => {
                 messageEl.textContent = '';
                 messageEl.className = 'indie-comments-message';
+                messageEl.removeAttribute('aria-live');
             }, 3000);
         }
     }
 
     showError(message) {
-        const messageEl = this.shadow.querySelector('#indie-comments-message');
+        const messageEl = this.querySelector('#indie-comments-message');
         if (messageEl) {
             messageEl.textContent = message;
             messageEl.className = 'indie-comments-message error';
+            messageEl.setAttribute('aria-live', 'assertive');
             setTimeout(() => {
                 messageEl.textContent = '';
                 messageEl.className = 'indie-comments-message';
+                messageEl.removeAttribute('aria-live');
             }, 5000);
         }
     }
@@ -325,26 +330,31 @@ class IndieCommentsWidget extends HTMLElement {
     }
 
     renderComment(comment, level = 0) {
-        const commentEl = document.createElement('div');
+        const commentEl = document.createElement('article');
         commentEl.className = `indie-comments-comment level-${level}`;
+        commentEl.setAttribute('role', 'article');
+        commentEl.setAttribute('aria-posinset', (level === 0 ? this.comments.indexOf(comment) + 1 : 1));
+        commentEl.setAttribute('aria-setsize', this.comments.length);
+
         commentEl.innerHTML = `
             <div class="indie-comments-comment-header">
                 <strong class="indie-comments-author">${comment.author_name}</strong>
                 <span class="indie-comments-date">${this.formatDate(comment.created_at)}</span>
             </div>
             <div class="indie-comments-content">${comment.content}</div>
-            <div class="indie-comments-replies">
-                ${(comment.replies && comment.replies.length > 0) 
-                    ? comment.replies.map(reply => this.renderComment(reply, level + 1)).join('') 
+            <div class="indie-comments-replies" role="group" aria-label="Respostas">
+                ${(comment.replies && comment.replies.length > 0)
+                    ? comment.replies.map(reply => this.renderComment(reply, level + 1)).join('')
                     : ''}
             </div>
         `;
-        return commentEl;
+        return commentEl.outerHTML;
     }
 
     render() {
         console.log('IndieCommentsWidget render called, current theme:', this.currentTheme);
-        this.shadow.innerHTML = '';
+        // this.shadow.innerHTML = ''; // Disabled for testing
+        this.innerHTML = ''; // Use regular DOM instead of shadow DOM
 
         const style = document.createElement('style');
         style.textContent = `
@@ -474,62 +484,75 @@ class IndieCommentsWidget extends HTMLElement {
 /* Theme styles injected dynamically */
 ${this.themes[this.currentTheme] || ''}
         `;
-        this.shadow.appendChild(style);
+        this.appendChild(style);
 
         const app = document.createElement('div');
         app.id = 'indie-comments-app';
+        app.setAttribute('role', 'region');
+        app.setAttribute('aria-label', 'Sistema de comentários');
         app.innerHTML = `
             <div id="indie-comments-header">
-                <h3>Comments</h3>
-                <div id="indie-comments-message" class="indie-comments-message"></div>
-                <select id="indie-comments-theme-select" aria-label="Select theme">
-                    <option value="default">Default</option>
-                    <option value="dark">Dark</option>
+                <h3>Comentários${this.comments.length > 0 ? ` (${this.comments.length})` : ''}</h3>
+                <div id="indie-comments-message" class="indie-comments-message" role="status" aria-live="polite"></div>
+                <select id="indie-comments-theme-select" aria-label="Selecionar tema">
+                    <option value="default">Padrão</option>
+                    <option value="dark">Escuro</option>
                     <option value="matrix">Matrix</option>
                     <option value="neocities">NeoCities</option>
                 </select>
             </div>
             <div id="indie-comments-form-container">
-                <form id="indie-comments-form">
+                <form id="indie-comments-form" role="form" aria-label="Formulário de comentário">
                     <div class="indie-comments-input-group">
-                        <input type="text" id="indie-comments-author" name="author_name" placeholder="Your name" required />
+                        <label for="indie-comments-author">Nome:</label>
+                        <input type="text" id="indie-comments-author" name="author_name" placeholder="Seu nome" required aria-required="true" autocomplete="name" />
+                        <span class="hint">Será exibido publicamente</span>
                     </div>
                     <div class="indie-comments-input-group">
-                        <input type="email" id="indie-comments-email" name="author_email" placeholder="Your email" required />
+                        <label for="indie-comments-email">Email:</label>
+                        <input type="email" id="indie-comments-email" name="author_email" placeholder="Seu email" required aria-required="true" autocomplete="email" />
+                        <span class="hint">Não será publicado</span>
                     </div>
                     <div class="indie-comments-input-group">
-                        <textarea id="indie-comments-content" name="content" placeholder="Write your comment..." required></textarea>
+                        <label for="indie-comments-content">Comentário:</label>
+                        <textarea id="indie-comments-content" name="content" placeholder="Escreva seu comentário..." required aria-required="true" maxlength="500"></textarea>
+                        <span class="hint">Máximo 500 caracteres</span>
                     </div>
-                    <button type="submit">Post Comment</button>
+                    <button type="submit" aria-describedby="submit-hint">Enviar Comentário</button>
+                    <span id="submit-hint" class="sr-only">Comentário será enviado para moderação antes de ser publicado</span>
                 </form>
             </div>
-            <div id="indie-comments-list">
+            <div id="indie-comments-list" role="feed" aria-label="Lista de comentários">
                 ${this.comments.length > 0
                     ? this.comments.map(comment => this.renderComment(comment)).join('')
-                    : '<div class="indie-comments-empty">No comments yet. Be the first to comment!</div>'}
+                    : '<div class="indie-comments-empty" role="status" aria-live="polite">Nenhum comentário ainda. Seja o primeiro a comentar!</div>'}
             </div>
         `;
-        this.shadow.appendChild(app);
+        this.appendChild(app);
 
         // Set theme select to current theme
-        const themeSelect = this.shadow.getElementById('indie-comments-theme-select');
-        themeSelect.value = this.currentTheme;
+        const themeSelect = this.querySelector('#indie-comments-theme-select');
+        if (themeSelect) {
+            themeSelect.value = this.currentTheme;
+        }
 
         // Theme select event listener
-        themeSelect.addEventListener('change', (event) => {
-            this.currentTheme = event.target.value;
-            this.render(); // Re-render to apply the selected theme
+        if (themeSelect) {
+            themeSelect.addEventListener('change', (event) => {
+                this.currentTheme = event.target.value;
+                this.render(); // Re-render to apply the selected theme
 
-            // Dispatch custom event to notify theme change to host page
-            this.dispatchEvent(new CustomEvent('themeChange', {
-                detail: { theme: this.currentTheme },
-                bubbles: true,
-                composed: true
-            }));
-        });
+                // Dispatch custom event to notify theme change to host page
+                this.dispatchEvent(new CustomEvent('themeChange', {
+                    detail: { theme: this.currentTheme },
+                    bubbles: true,
+                    composed: true
+                }));
+            });
+        }
 
         // Attach form event listeners
-        const form = this.shadow.querySelector('#indie-comments-form');
+        const form = this.querySelector('#indie-comments-form');
         if (form) {
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -550,7 +573,7 @@ ${this.themes[this.currentTheme] || ''}
 }
 
 // Define the custom element
-customElements.define('indie-comments-widget', IndieCommentsWidget);
+customElements.define('comment-widget', IndieCommentsWidget);
 
 // Debug: Log when the script loads
 console.log('IndieCommentsWidget script loaded');
