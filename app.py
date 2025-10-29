@@ -31,8 +31,14 @@ async def log_requests(request, call_next):
     import logging
     logging.info(f"Request: {request.method} {request.url}")
     response = await call_next(request)
-    logging.info(f"Response: {response.status_code}")
+    logging.info(f"Response: {response.status_code} for {request.url}")
+    # Log route information for debugging
+    if hasattr(request, 'scope') and 'path' in request.scope:
+        logging.info(f"Route path: {request.scope.get('path')}")
     return response
+
+# Vercel handler for serverless deployment
+handler = app
 
 # CORS middleware
 app.add_middleware(
@@ -59,6 +65,19 @@ app.include_router(threads.router, prefix="/threads", tags=["threads"])
 app.include_router(widget.router, prefix="/widget", tags=["widget"])
 app.include_router(api.router, prefix="/api", tags=["api"])
 app.include_router(default.router, tags=["default"])
+
+# Debug: Log all registered routes
+import logging
+logging.info("Registered routes:")
+for route in app.routes:
+    if hasattr(route, 'path') and hasattr(route, 'methods'):
+        logging.info(f"  {route.methods} {route.path}")
+    elif hasattr(route, 'path'):
+        logging.info(f"  Mount: {route.path}")
+    elif hasattr(route, 'name'):
+        logging.info(f"  Route: {route.name}")
+    else:
+        logging.info(f"  Unknown route type: {type(route)}")
 
 # Error handlers
 @app.exception_handler(404)
