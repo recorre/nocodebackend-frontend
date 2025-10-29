@@ -399,12 +399,22 @@
     <div id="indie-comments"></div>
 
     <script>
-      new IndieCommentsWidget('#indie-comments', {
-        siteId: 'my-blog',
-        pageId: window.location.pathname,
-        limit: 10,
-        theme: 'light'
-      }).init();
+      // Initialize comment widget using custom element
+      document.addEventListener('DOMContentLoaded', function() {
+        const commentWidget = document.querySelector('comment-widget');
+        if (commentWidget) {
+          console.log('Comment widget initialized');
+        } else {
+          // Fallback: create widget if not found
+          const container = document.querySelector('#indie-comments');
+          if (container) {
+            const widget = document.createElement('comment-widget');
+            widget.setAttribute('thread-id', '1');
+            widget.setAttribute('theme', 'default');
+            container.appendChild(widget);
+          }
+        }
+      });
     </script>
 </body>
 </html></div>
@@ -463,6 +473,16 @@
     <!-- Load Widget -->
     <script src="/dist/comment-widget.js"></script>
     <script>
+        // Initialize widget when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking for comment widget...');
+            const widget = document.querySelector('comment-widget');
+            if (widget) {
+                console.log('Comment widget found and initialized');
+            } else {
+                console.log('No comment widget found on this page');
+            }
+        });
 
         // Theme change function
         window.changeTheme = function(theme) {
