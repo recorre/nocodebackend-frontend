@@ -6,14 +6,13 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 import httpx
 from typing import Optional, Dict, Any
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from .auth import get_current_user, backend_request
 
-try:
-    from utils.helpers import calculate_stats, group_threads_by_site, generate_site_id
-except ImportError:
-    # Fallback for direct execution
-    from ..utils.helpers import calculate_stats, group_threads_by_site, generate_site_id
+from ..utils.helpers import calculate_stats, group_threads_by_site, generate_site_id
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")

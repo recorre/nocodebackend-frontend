@@ -12,6 +12,9 @@ from typing import Dict, Any
 from dotenv import load_dotenv
 load_dotenv()  # Remove o path específico
 
+# Import route modules
+from ..routes import pages, auth, dashboard, export
+
 # ========================
 # APP CONFIGURATION
 # ========================
@@ -30,6 +33,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ========================
+# INCLUDE ROUTE MODULES
+# ========================
+
+app.include_router(pages.router, tags=["pages"])
+app.include_router(auth.router, tags=["auth"])
+app.include_router(dashboard.router, tags=["dashboard"])
+app.include_router(export.router, prefix="/dashboard", tags=["export"])
 
 # ========================
 # BASIC ROUTES

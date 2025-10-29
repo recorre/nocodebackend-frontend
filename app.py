@@ -16,11 +16,7 @@ import hashlib
 import logging
 
 # Import route modules
-try:
-    from routes import pages, auth, dashboard
-except ImportError:
-    # Fallback for direct execution
-    from .routes import pages, auth, dashboard
+from routes import pages, auth, dashboard, export
 
 # Create FastAPI app
 app = FastAPI(
@@ -41,9 +37,6 @@ app.add_middleware(
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# Mount widget files - REMOVED: directory ../widget does not exist in Vercel
-# app.mount("/widget", StaticFiles(directory="../widget"), name="widget")
-
 # Templates
 templates = Jinja2Templates(directory="templates")
 
@@ -51,6 +44,7 @@ templates = Jinja2Templates(directory="templates")
 app.include_router(pages.router, tags=["pages"])
 app.include_router(auth.router, tags=["auth"])
 app.include_router(dashboard.router, tags=["dashboard"])
+app.include_router(export.router, prefix="/dashboard", tags=["export"])
 
 # Error handlers
 @app.exception_handler(404)

@@ -8,28 +8,22 @@ import httpx
 from typing import Optional
 from datetime import datetime, timedelta
 import hashlib
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-try:
-    from utils.helpers import (
-        hash_password,
-        generate_session_id,
-        validate_email,
-        validate_password
-    )
-except ImportError:
-    # Fallback for direct execution
-    from ..utils.helpers import (
-        hash_password,
-        generate_session_id,
-        validate_email,
-        validate_password
-    )
+from ..utils.helpers import (
+    hash_password,
+    generate_session_id,
+    validate_email,
+    validate_password
+)
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 # Backend API configuration
-BACKEND_URL = "http://localhost:8000"
+BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
 http_client = httpx.AsyncClient(timeout=30.0)
 
 # Session management (simple in-memory for demo)
@@ -130,12 +124,18 @@ async def register(request: Request, name: str = Form(), email: str = Form(), pa
         if not validate_password(password):
             raise HTTPException(status_code=400, detail="Password must be at least 6 characters")
 
+        # Log backend URL and request data
+        print(f"DEBUG: BACKEND_URL = {BACKEND_URL}")
+        print(f"DEBUG: Registering user: name={name.strip()}, email={email.lower()}")
+
         # Register with backend
         result = await backend_request("POST", "/auth/register", {
             "name": name.strip(),
             "email": email.lower(),
             "password": password
         })
+
+        print(f"DEBUG: Backend response: {result}")
 
         # Auto-login after registration
         session_id = generate_session_id(email)
@@ -149,7 +149,15 @@ async def register(request: Request, name: str = Form(), email: str = Form(), pa
         return response
 
     except HTTPException as e:
+        print(f"DEBUG: HTTPException in register: {e.detail}")
         error_message = str(e.detail)
+        return templates.TemplateResponse("auth/register.html", {
+            "request": request,
+            "error": error_message
+        })
+    except Exception as e:
+        print(f"DEBUG: Unexpected error in register: {str(e)}")
+        error_message = "Registration failed. Please try again."
         return templates.TemplateResponse("auth/register.html", {
             "request": request,
             "error": error_message

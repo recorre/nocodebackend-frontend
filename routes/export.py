@@ -9,6 +9,9 @@ from fastapi.templating import Jinja2Templates
 import httpx
 from typing import Optional
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from .auth import get_current_user, backend_request
 
