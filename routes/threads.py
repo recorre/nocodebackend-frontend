@@ -13,7 +13,6 @@ from .auth import get_current_user, backend_request
 
 router = APIRouter()
 BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
-http_client = httpx.AsyncClient(timeout=30.0)
 
 
 @router.post("/")

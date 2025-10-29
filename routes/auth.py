@@ -24,7 +24,6 @@ templates = Jinja2Templates(directory="templates")
 
 # Backend API configuration
 BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
-http_client = httpx.AsyncClient(timeout=30.0)
 
 # Session management (simple in-memory for demo)
 sessions = {}
@@ -45,25 +44,34 @@ async def get_current_user(request: Request) -> Optional[dict]:
 
 
 async def backend_request(method: str, endpoint: str, data: Optional[dict] = None, params: Optional[dict] = None):
-    """Make request to backend API"""
+    """Make request to backend API with context-managed HTTP client"""
     url = f"{BACKEND_URL}{endpoint}"
 
     try:
-        if method == "GET":
-            response = await http_client.get(url, params=params)
-        elif method == "POST":
-            response = await http_client.post(url, json=data, params=params)
-        elif method == "PUT":
-            response = await http_client.put(url, json=data, params=params)
-        elif method == "DELETE":
-            response = await http_client.delete(url, params=params)
+        print(f"DEBUG: backend_request - method={method}, url={url}, data={data}")
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            if method == "GET":
+                response = await client.get(url, params=params)
+            elif method == "POST":
+                response = await client.post(url, json=data, params=params)
+            elif method == "PUT":
+                response = await client.put(url, json=data, params=params)
+            elif method == "DELETE":
+                response = await client.delete(url, params=params)
 
+        print(f"DEBUG: backend_request - response status: {response.status_code}")
         response.raise_for_status()
-        return response.json()
+        result = response.json()
+        print(f"DEBUG: backend_request - response json: {result}")
+        return result
 
     except httpx.HTTPStatusError as e:
+        print(f"DEBUG: backend_request - HTTPStatusError: {e.response.status_code}, {e.response.text}")
         raise HTTPException(status_code=e.response.status_code, detail=str(e))
     except Exception as e:
+        print(f"DEBUG: backend_request - Exception: {type(e)}, {str(e)}")
+        import traceback
+        print(f"DEBUG: backend_request - Traceback: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -129,11 +137,13 @@ async def register(request: Request, name: str = Form(), email: str = Form(), pa
         print(f"DEBUG: Registering user: name={name.strip()}, email={email.lower()}")
 
         # Register with backend
+        print("DEBUG: About to call backend_request")
         result = await backend_request("POST", "/auth/register", {
             "name": name.strip(),
             "email": email.lower(),
             "password": password
         })
+        print("DEBUG: backend_request completed successfully")
 
         print(f"DEBUG: Backend response: {result}")
 
@@ -157,6 +167,9 @@ async def register(request: Request, name: str = Form(), email: str = Form(), pa
         })
     except Exception as e:
         print(f"DEBUG: Unexpected error in register: {str(e)}")
+        print(f"DEBUG: Exception type: {type(e)}")
+        import traceback
+        print(f"DEBUG: Traceback: {traceback.format_exc()}")
         error_message = "Registration failed. Please try again."
         return templates.TemplateResponse("auth/register.html", {
             "request": request,

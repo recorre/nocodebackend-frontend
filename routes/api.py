@@ -11,22 +11,22 @@ load_dotenv()
 
 router = APIRouter()
 BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
-http_client = httpx.AsyncClient(timeout=30.0)
 
 
 async def backend_request_api(method: str, endpoint: str, data: Optional[dict] = None, params: Optional[dict] = None):
-    """Make request to backend API for api endpoints"""
+    """Make request to backend API for api endpoints with context-managed HTTP client"""
     url = f"{BACKEND_URL}{endpoint}"
 
     try:
-        if method == "GET":
-            response = await http_client.get(url, params=params)
-        elif method == "POST":
-            response = await http_client.post(url, json=data, params=params)
-        elif method == "PUT":
-            response = await http_client.put(url, json=data, params=params)
-        elif method == "DELETE":
-            response = await http_client.delete(url, params=params)
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            if method == "GET":
+                response = await client.get(url, params=params)
+            elif method == "POST":
+                response = await client.post(url, json=data, params=params)
+            elif method == "PUT":
+                response = await client.put(url, json=data, params=params)
+            elif method == "DELETE":
+                response = await client.delete(url, params=params)
 
         response.raise_for_status()
         return response.json()
