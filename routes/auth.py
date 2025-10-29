@@ -12,7 +12,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-from ..utils.helpers import (
+from utils.helpers import (
     hash_password,
     generate_session_id,
     validate_email,

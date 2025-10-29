@@ -60,4 +60,4 @@ async def server_error_exception_handler(request: Request, exc):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=3000, reload=True)
+    uvicorn.run("app:app", host="0.0.0.0", port=3000, reload=True)

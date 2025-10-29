@@ -12,7 +12,7 @@ load_dotenv()
 
 from .auth import get_current_user, backend_request
 
-from ..utils.helpers import calculate_stats, group_threads_by_site, generate_site_id
+from utils.helpers import calculate_stats, group_threads_by_site, generate_site_id
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
