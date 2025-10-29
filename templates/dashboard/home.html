@@ -96,7 +96,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3 mb-3">
-                            <a href="/dashboard/moderation" class="btn btn-warning btn-lg w-100">
+                            <a href="/dashboard/comments" class="btn btn-warning btn-lg w-100">
                                 <i class="fas fa-clock fa-2x mb-2"></i>
                                 <br>Moderate Comments
                                 {% if stats.pending > 0 %}
@@ -140,7 +140,7 @@
                     <div class="alert alert-warning">
                         <i class="fas fa-exclamation-triangle"></i>
                         <strong>{{ stats.pending }} comments</strong> are waiting for moderation.
-                        <a href="/dashboard/moderation" class="alert-link">Review them now</a>
+                        <a href="/dashboard/comments" class="alert-link">Review them now</a>
                     </div>
                     {% endif %}
 

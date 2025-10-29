@@ -22,7 +22,7 @@ templates = Jinja2Templates(directory="templates")
 async def dashboard(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Dashboard home"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
         # Get user's threads
@@ -66,7 +66,7 @@ async def dashboard(request: Request, user: Optional[Dict[str, Any]] = Depends(g
 async def threads_page(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Thread management page"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
         threads = await backend_request("GET", "/threads", params={"usuario_proprietario_id": user.get("user_id")})
@@ -89,7 +89,7 @@ async def threads_page(request: Request, user: Optional[Dict[str, Any]] = Depend
 async def comments_page(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Comment moderation page"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
         # Get pending comments
@@ -175,7 +175,7 @@ async def create_site(site_name: str = Form(), site_url: str = Form(), user: Opt
 async def sites_page(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Sites management page"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
         # Get user's threads (each thread represents a site)
@@ -203,7 +203,7 @@ async def sites_page(request: Request, user: Optional[Dict[str, Any]] = Depends(
 async def site_detail_page(site_id: str, request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Site detail page with threads and comments"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     try:
         # Get all threads for this site
@@ -297,7 +297,7 @@ async def delete_thread(thread_id: int, user: Optional[Dict[str, Any]] = Depends
 async def theme_customizer(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Theme customization page"""
     if not user:
-        return RedirectResponse(url="/login", status_code=302)
+        return RedirectResponse(url="/auth/login", status_code=302)
 
     return templates.TemplateResponse("dashboard/theme-customizer.html", {
         "request": request,
