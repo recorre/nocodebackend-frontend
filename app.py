@@ -38,7 +38,8 @@ async def log_requests(request, call_next):
     return response
 
 # Vercel handler for serverless deployment
-handler = app
+# This is the entry point that Vercel uses for serverless functions
+app = app
 
 # CORS middleware
 app.add_middleware(
