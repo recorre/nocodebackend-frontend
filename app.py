@@ -16,7 +16,7 @@ import hashlib
 import logging
 
 # Import route modules
-from routes import pages, auth, dashboard, export
+from routes import pages, auth, dashboard, export, comments, threads, widget, api, default
 
 # Create FastAPI app
 app = FastAPI(
@@ -42,9 +42,14 @@ templates = Jinja2Templates(directory="templates")
 
 # Include route modules
 app.include_router(pages.router, tags=["pages"])
-app.include_router(auth.router, tags=["auth"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(dashboard.router, tags=["dashboard"])
 app.include_router(export.router, prefix="/dashboard", tags=["export"])
+app.include_router(comments.router, prefix="/comments", tags=["comments"])
+app.include_router(threads.router, prefix="/threads", tags=["threads"])
+app.include_router(widget.router, prefix="/widget", tags=["widget"])
+app.include_router(api.router, prefix="/api", tags=["api"])
+app.include_router(default.router, tags=["default"])
 
 # Error handlers
 @app.exception_handler(404)
