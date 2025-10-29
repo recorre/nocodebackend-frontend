@@ -1,11 +1,11 @@
 {
   "env": {
-    "BACKEND_API_URL": "https://comment-widget-backend.vercel.app",
+    "BACKEND_API_URL": "https://nocodebackend-api.vercel.app",
     "BACKEND_API_KEY": "@backend-api-key"
   },
   "build": {
     "env": {
-      "BACKEND_API_URL": "https://comment-widget-backend.vercel.app",
+      "BACKEND_API_URL": "https://nocodebackend-api.vercel.app",
       "BACKEND_API_KEY": "@backend-api-key"
     }
   }
