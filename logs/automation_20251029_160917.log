@@ -1,0 +1,27 @@
+2025-10-29 16:09:17,886 - Automation - INFO - __init__:234 - Enhanced Automation initialized (PyAutoGUI: mock/simulation)
+2025-10-29 16:09:17,886 - Automation - INFO - __init__:235 - Simulation mode: True
+2025-10-29 16:09:17,887 - Automation - INFO - run_enhanced_automation:421 - 🚀 Starting enhanced widget commenting automation
+2025-10-29 16:09:17,887 - Automation - INFO - verify_display_connection:248 - Verifying display connection...
+2025-10-29 16:09:17,887 - Automation - WARNING - run_enhanced_automation:427 - Display issue detected: PyAutoGUI not available in this environment
+2025-10-29 16:09:17,887 - Automation - INFO - run_enhanced_automation:429 - Running in simulation mode due to display unavailability
+2025-10-29 16:09:17,887 - Automation - INFO - run_enhanced_automation:434 - Opening browser...
+2025-10-29 16:09:17,887 - Automation - INFO - open_browser_with_error_handling:379 - Opening browser to: https://casacorre.neocities.org/
+2025-10-29 16:09:17,888 - Automation - INFO - open_browser_with_error_handling:389 - Found browser: firefox
+2025-10-29 16:09:22,889 - Automation - ERROR - open_browser_with_error_handling:415 - Failed to open browser: Browser firefox failed to start
+2025-10-29 16:09:22,889 - Automation - ERROR - run_enhanced_automation:488 - Automation failed with unexpected error: Browser automation failed: Browser firefox failed to start
+2025-10-29 16:09:22,892 - Automation - ERROR - run_enhanced_automation:489 - Traceback: Traceback (most recent call last):
+  File "/home/renato/Documentos/nocodebackend-frontend/enhanced_widget_automation.py", line 405, in open_browser_with_error_handling
+    raise AutomationError(f"Browser {browser_cmd} failed to start")
+AutomationError: Browser firefox failed to start
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/renato/Documentos/nocodebackend-frontend/enhanced_widget_automation.py", line 435, in run_enhanced_automation
+    self.open_browser_with_error_handling("https://casacorre.neocities.org/")
+  File "/home/renato/Documentos/nocodebackend-frontend/enhanced_widget_automation.py", line 416, in open_browser_with_error_handling
+    raise AutomationError(f"Browser automation failed: {e}")
+AutomationError: Browser automation failed: Browser firefox failed to start
+
+2025-10-29 16:09:22,949 - Automation - INFO - take_screenshot:287 - 📸 Screenshot saved: automation_screenshots/20251029_160922_automation_failed.png
+2025-10-29 16:09:22,950 - Automation - ERROR - main:530 - Automation error: Unexpected automation failure: Browser automation failed: Browser firefox failed to start

@@ -1,0 +1,12 @@
+2025-10-29 15:49:19,740 - Automation - INFO - __init__:233 - Enhanced Automation initialized (PyAutoGUI: mock/simulation)
+2025-10-29 15:49:19,740 - Automation - INFO - __init__:234 - Simulation mode: True
+2025-10-29 15:49:19,740 - Automation - ERROR - main:533 - Unexpected error: name 'signal' is not defined
+2025-10-29 15:49:19,745 - Automation - ERROR - main:534 - Traceback: Traceback (most recent call last):
+  File "/home/renato/Documentos/nocodebackend-frontend/enhanced_widget_automation.py", line 505, in main
+    automation = EnhancedWidgetCommentingAutomation(simulate_only=simulate_only)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/renato/Documentos/nocodebackend-frontend/enhanced_widget_automation.py", line 237, in __init__
+    signal.signal(signal.SIGINT, self._signal_handler)
+    ^^^^^^
+NameError: name 'signal' is not defined. Did you forget to import 'signal'
+

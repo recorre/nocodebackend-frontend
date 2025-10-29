@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  pyautogui:
+    build:
+      context: .
+      dockerfile: Dockerfile.pyautogui
+    environment:
+      - DISPLAY=:99
+      - QT_X11_NO_MITSHM=1
+    volumes:
+      - ./automation_screenshots:/app/screenshots
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    network_mode: host
+    command: python widget_commenting_automation.py

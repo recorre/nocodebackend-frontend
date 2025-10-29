@@ -1,0 +1,44 @@
+2025-10-29 15:11:22,489 - INFO - Dashboard Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:11:22,489 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:13:18,179 - INFO - Widget Commenting Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:13:18,179 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:16:09,415 - INFO - Dashboard Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:16:09,416 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:16:26,316 - INFO - Widget Commenting Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:16:26,316 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:21:55,259 - INFO - Dashboard Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:21:55,259 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:29:05,860 - INFO - Dashboard Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:29:05,861 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 15:58:11,454 - INFO - Widget Commenting Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 15:58:11,454 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 16:02:44,678 - INFO - Dashboard Automation initialized (PyAutoGUI: available)
+2025-10-29 16:02:44,678 - INFO - Starting dashboard automation
+2025-10-29 16:02:44,678 - INFO - Opening browser to: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:02:44,680 - INFO - Opened firefox with URL: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:02:49,680 - ERROR - Failed to open browser: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:02:49,681 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:02:49,681 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:02:59,812 - INFO - Dashboard Automation initialized (PyAutoGUI: available)
+2025-10-29 16:02:59,812 - INFO - Starting dashboard automation
+2025-10-29 16:02:59,813 - INFO - Opening browser to: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:02:59,814 - INFO - Opened firefox with URL: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:03:04,815 - ERROR - Failed to open browser: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:03:04,815 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:03:04,816 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:35:43,490 - INFO - Dashboard Automation initialized (PyAutoGUI: available)
+2025-10-29 16:35:43,490 - INFO - Starting dashboard automation
+2025-10-29 16:35:43,490 - INFO - Opening browser to: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:35:43,492 - INFO - Opened firefox with URL: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:35:48,492 - ERROR - Failed to open browser: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:35:48,493 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:35:48,493 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:36:13,895 - INFO - Dashboard Automation initialized (PyAutoGUI: unavailable)
+2025-10-29 16:36:13,895 - WARNING - PyAutoGUI not available. Running in simulation mode.
+2025-10-29 16:36:39,714 - INFO - Dashboard Automation initialized (PyAutoGUI: available)
+2025-10-29 16:36:39,714 - INFO - Starting dashboard automation
+2025-10-29 16:36:39,714 - INFO - Opening browser to: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:36:39,717 - INFO - Opened firefox with URL: https://nocodebackend-frontend.vercel.app/
+2025-10-29 16:36:44,717 - ERROR - Failed to open browser: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:36:44,717 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`
+2025-10-29 16:36:44,717 - ERROR - Automation failed: To take screenshots, you must install Pillow version 9.2.0 or greater and gnome-screenshot by running `sudo apt install gnome-screenshot`

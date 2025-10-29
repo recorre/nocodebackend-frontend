@@ -1,0 +1,41 @@
+# Use a Python base image with GUI support
+FROM python:3.9-slim
+
+# Install X11 and GUI dependencies
+RUN apt-get update && apt-get install -y \
+    xvfb \
+    x11vnc \
+    xauth \
+    dbus-x11 \
+    x11-utils \
+    x11-xserver-utils \
+    libx11-6 \
+    libxext6 \
+    libxrender1 \
+    libxtst6 \
+    libxi6 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages
+RUN pip install pyautogui Pillow
+
+# Create app directory
+WORKDIR /app
+
+# Copy application files
+COPY . .
+
+# Create startup script
+RUN echo '#!/bin/bash' > start.sh && \
+    echo 'Xvfb :99 -screen 0 1920x1080x24 &' >> start.sh && \
+    echo 'export DISPLAY=:99' >> start.sh && \
+    echo 'xhost +local:' >> start.sh && \
+    echo 'python "$@"' >> start.sh && \
+    chmod +x start.sh
+
+# Set environment variables
+ENV DISPLAY=:99
+ENV QT_X11_NO_MITSHM=1
+
+# Default command
+CMD ["./start.sh"]
