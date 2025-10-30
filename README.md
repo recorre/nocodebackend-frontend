@@ -96,7 +96,7 @@ nocodebackend-frontend/
 
 ```bash
 # Backend API
-BACKEND_API_URL=http://localhost:8000
+BACKEND_API_URL=https://comment-widget-backend.vercel.app
 
 # Application
 SECRET_KEY=your-secret-key

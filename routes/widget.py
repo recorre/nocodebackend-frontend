@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 router = APIRouter()
-BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+BACKEND_URL = os.getenv("BACKEND_API_URL", "https://comment-widget-backend.vercel.app")
 
 
 async def backend_request_widget(method: str, endpoint: str, data: Optional[dict] = None, params: Optional[dict] = None):

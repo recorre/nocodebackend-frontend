@@ -86,7 +86,7 @@ def is_session_expired(created_at: datetime, max_age: timedelta = timedelta(hour
     return datetime.now() - created_at > max_age
 
 
-def build_api_url(endpoint: str, base_url: str = "http://localhost:8000") -> str:
+def build_api_url(endpoint: str, base_url: str = "https://comment-widget-backend.vercel.app") -> str:
     """Build full API URL"""
     return f"{base_url}{endpoint}"
 

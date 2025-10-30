@@ -9,7 +9,7 @@ import json
 class FrontendAPIClient:
     """API client for frontend-backend communication"""
 
-    def __init__(self, base_url: str = "http://localhost:8000", timeout: float = 30.0):
+    def __init__(self, base_url: str = "https://comment-widget-backend.vercel.app", timeout: float = 30.0):
         self.base_url = base_url.rstrip('/')
         self.timeout = timeout
         self._client = httpx.AsyncClient(timeout=self.timeout)

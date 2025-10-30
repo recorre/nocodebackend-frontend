@@ -12,7 +12,7 @@ load_dotenv()
 from .auth import get_current_user, backend_request
 
 router = APIRouter()
-BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+BACKEND_URL = os.getenv("BACKEND_API_URL", "https://comment-widget-backend.vercel.app")
 
 
 @router.post("/")

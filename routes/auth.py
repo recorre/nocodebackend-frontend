@@ -23,7 +23,7 @@ router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 
 # Backend API configuration
-BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+BACKEND_URL = os.getenv("BACKEND_API_URL", "https://comment-widget-backend.vercel.app")
 
 # Session management (simple in-memory for demo)
 sessions = {}

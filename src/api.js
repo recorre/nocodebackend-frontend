@@ -4,8 +4,8 @@
  */
 
 export class APIClient {
-    constructor(baseUrl = 'http://localhost:8000') {
-        // Use localhost:8000 for local development, but allow override
+    constructor(baseUrl = 'https://comment-widget-backend.vercel.app') {
+        // Use production URL as default, allow override via environment
         this.baseUrl = baseUrl;
         this.defaultHeaders = {
             'Content-Type': 'application/json'

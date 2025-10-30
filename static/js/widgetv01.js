@@ -6,7 +6,7 @@ class IndieCommentsWidget extends HTMLElement {
         super();
         console.log('IndieCommentsWidget constructor called');
         this.threadId = this.getAttribute('thread-id') || window.location.pathname;
-        this.apiBaseUrl = this.getAttribute('api-base-url') || 'http://localhost:8000';
+        this.apiBaseUrl = this.getAttribute('api-base-url') || 'https://comment-widget-backend.vercel.app';
         this.containerId = 'indie-comments-container'; // Fixed ID for container
         this.moderationEnabled = false;
         this.comments = [];

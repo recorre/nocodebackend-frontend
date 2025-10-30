@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 router = APIRouter()
-BACKEND_URL = os.getenv("BACKEND_API_URL", "http://localhost:8000")
+BACKEND_URL = os.getenv("BACKEND_API_URL", "https://nocodebackend-api.vercel.app")
 http_client = httpx.AsyncClient(timeout=30.0)
 
 
