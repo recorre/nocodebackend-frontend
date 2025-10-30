@@ -3,6 +3,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Dashboard DOM loaded, initializing...');
     // Initialize tooltips
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -65,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Setup focus management
     setupFocusManagement();
+    console.log('Dashboard initialization complete');
 });
 
 /**
