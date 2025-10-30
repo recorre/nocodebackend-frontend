@@ -21,15 +21,22 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request, user: Optional[Dict[str, Any]] = Depends(get_current_user)):
     """Dashboard home"""
+    print("DEBUG: Dashboard route called")
     if not user:
+        print("DEBUG: No user found, redirecting to login")
         return RedirectResponse(url="/auth/login", status_code=302)
 
+    print(f"DEBUG: User authenticated: {user.get('user_id')}")
     try:
+        print("DEBUG: Fetching user's threads")
         # Get user's threads
         threads = await backend_request("GET", "/threads", params={"usuario_proprietario_id": user.get("user_id")})
+        print(f"DEBUG: Threads response: {threads}")
 
+        print("DEBUG: Fetching recent comments for moderation")
         # Get recent comments for moderation
         comments = await backend_request("GET", "/comments", params={"is_approved": 0, "limit": 10})
+        print(f"DEBUG: Comments response: {comments}")
 
         # Calculate stats for dashboard
         total_comments = len(comments.get("data", []) if isinstance(comments, dict) else comments)
@@ -45,6 +52,9 @@ async def dashboard(request: Request, user: Optional[Dict[str, Any]] = Depends(g
             "threads": len(threads.get("data", []) if isinstance(threads, dict) else threads)
         }
 
+        print(f"DEBUG: Stats calculated: {stats}")
+        print("DEBUG: Rendering dashboard template")
+
         return templates.TemplateResponse("dashboard/home.html", {
             "request": request,
             "user": user,
@@ -53,12 +63,16 @@ async def dashboard(request: Request, user: Optional[Dict[str, Any]] = Depends(g
             "stats": stats
         })
 
-    except HTTPException:
+    except Exception as e:
+        print(f"DEBUG: Exception in dashboard: {type(e).__name__}: {str(e)}")
+        import traceback
+        print(f"DEBUG: Traceback: {traceback.format_exc()}")
         return templates.TemplateResponse("dashboard/home.html", {
             "request": request,
             "user": user,
             "threads": [],
-            "pending_comments": []
+            "pending_comments": [],
+            "error": str(e)
         })
 
 
